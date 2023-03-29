@@ -1,15 +1,10 @@
-import { Fragment } from 'react'
-
 const MyJsx002 = () => {
-
-    return (
-        <Fragment>
-        <>    
-            <p>start</p>
-            <span>!!!</span>
-        </>
-        </Fragment>
-    )
-}
+  return (
+    <>
+      <p>start</p>
+      <span>!!!</span>
+    </>
+  );
+};
 
 export default MyJsx002;
