@@ -32,9 +32,9 @@ function App() {
       {/* <MyJsx003></MyJsx003> */}
       {/* <MyJsx004></MyJsx004> */}
       {/* <MyJsx005></MyJsx005> */}
-      {/* <MyBasic001></MyBasic001> */}
+      <MyBasic001></MyBasic001>
       {/* <MyUseState002></MyUseState002> */}
-      <MyUseState003></MyUseState003>
+      {/* <MyUseState003></MyUseState003> */}
       {/* <MyUseState004></MyUseState004> */}
       {/* <MyUseState005></MyUseState005> */}
       {/* <MyUseState006></MyUseState006> */}
