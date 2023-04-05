@@ -1,58 +1,65 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { boardActions } from '../../reduxs/actions/board_action';
 import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import TableRow from './table_row';
 import PageNavigation from './page_nav';
 
 const BoardList = () => {
-    const dispatch = useDispatch();
-    const navigator = useNavigate();
+  const dispatch = useDispatch();
+  const navigator = useNavigate();
 
-    const {currentPage} = useParams();
+  const { currentPage } = useParams();
 
-    const boardList = useSelector((state) => state.board.boardList);
-    const pv = useSelector((state) => state.board.pv ? state.board.pv : {currentPage: 1});
+  const boardList = useSelector((state) => state.board.boardList);
+  const pv = useSelector((state) =>
+    state.board.pv ? state.board.pv : { currentPage: 1 }
+  );
 
-    const getBoardList = (currentPage) => {
-        dispatch(boardActions.getBoardList(currentPage));
-        // navigator(`/board/list/${currentPage}`);
-    };
+  const getBoardList = (currentPage) => {
+    dispatch(boardActions.getBoardList(currentPage));
+    navigator(`/board/list/${currentPage}`); //프론트엔드에서 선택한 페이지로 이동하기 위해
+  };
 
-    useEffect(() => {
-        getBoardList(currentPage);
-    }, []);
+  useEffect(() => {
+    getBoardList(currentPage);
+  }, []);
 
-    return (
-        <div>
-            <h3 className = 'text-center'>게시판 목록</h3>
-            <table className = 'table table-striped' style = {{marginTop:20}}>
-                <colgroup>
-                    <col width='8%' />
-                    <col width='*' />
-                    <col width='12%' />
-                    <col width='12%' />
-                </colgroup>
+  return (
+    <div>
+      <Link className='btn btn-danger' to='/board/write'>
+        글쓰기
+      </Link>
 
-                <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>작성일</th>
-                        <th>조회수</th>
-                    </tr>
-                </thead>
+      <h3 className='text-center'>게시판 목록</h3>
 
-                <tbody>
-                    {boardList && boardList.map((board) => {
-                        return <TableRow board = {board} key = {board.num} />;
-                    })}
-                </tbody>
-            </table> 
-            {/* <p>{console.log(boardList.length)}</p> */}
-            {pv ? <PageNavigation getBoardList={getBoardList} /> : ''}
-        </div>
-    );
+      <table className='table table-striped' style={{ marginTop: 20 }}>
+        <colgroup>
+          <col width='8%' />
+          <col width='*' />
+          <col width='12%' />
+          <col width='12%' />
+        </colgroup>
+
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일</th>
+            <th>조회수</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {boardList &&
+            boardList.map((board) => {
+              return <TableRow board={board} key={board.num} />;
+            })}
+        </tbody>
+      </table>
+      {pv ? <PageNavigation getBoardList={getBoardList} /> : ''}
+    </div>
+  );
 };
 
 export default BoardList;
