@@ -18,6 +18,18 @@ function BaseLayout() {
                         </li>
 
                         <li className = 'nav-item'>
+                            <NavLink style = {activeStyle} className = 'nav-link' to = '/login'>
+                                LOGIN
+                            </NavLink>
+                        </li>
+
+                        <li className = 'nav-item'>
+                            <NavLink style = {activeStyle} className = 'nav-link' to = '/joinadd'>
+                                JOIN
+                            </NavLink>
+                        </li>
+
+                        <li className = 'nav-item'>
                             <NavLink style = {activeStyle} className = 'nav-link' to = '/board/list/1'>
                                 BOARD
                             </NavLink>
