@@ -12,10 +12,10 @@ function getBoardList(currentPage) {
   };
 }
 
-function getBoardDetail(num) {
+function getBoardDetail(num, config) {
   return async (dispatch) => {
     const data = await axios
-      .get(`${baseUrl}/board/view/${num}`)
+      .get(`${baseUrl}/board/view/${num}`, config)
       .then((response) => response.data);
     dispatch(boardReducers.getBoardDetail({ data }));
   };
@@ -28,20 +28,21 @@ function getBoardDownload(upload) {
         responseType: 'blob',
       })
       .then((response) => response.data);
-  //   dispatch(boardActions.getBoardDownload(data));
+    //dispatch(boardActions.getBoardDownload({ data }));
     return data;
   };
 }
-  
-function getBoardDelete(num) {
+
+function getBoardDelete(num, config) {
   return async (dispatch) => {
     await axios
-      .delete(`${baseUrl}/board/delete/${num}`)
+      .delete(`${baseUrl}/board/delete/${num}`, config)
       .then((response) => response.data);
   };
 }
 
-function getBoardWrite(formData, config) {
+//formData => 넘겨줄 데이터 / config => 옵션
+function getboardWrite(formData, config) {
   return async (dispatch) => {
     await axios
       .post(`${baseUrl}/board/write`, formData, config)
@@ -50,7 +51,7 @@ function getBoardWrite(formData, config) {
 }
 
 function getBoardUpdate(formData, config) {
-  return async () => {
+  return async (dispatch) => {
     await axios
       .put(`${baseUrl}/board/update`, formData, config)
       .then((response) => response.data);
@@ -58,10 +59,10 @@ function getBoardUpdate(formData, config) {
 }
 
 export const boardActions = {
-  getBoardList, 
-  getBoardDetail, 
-  getBoardDownload, 
+  getBoardList,
+  getBoardDetail,
+  getBoardDownload,
   getBoardDelete,
-  getBoardWrite,
+  getboardWrite,
   getBoardUpdate,
 };

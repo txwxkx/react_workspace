@@ -48,6 +48,7 @@ const BoardWrite = () => {
     const formData = new FormData(); //첨부파일이 있으면 FormData에 담아서 넘기기
     formData.append('subject', subject);
     formData.append('content', content);
+    formData.append('memberEmail', localStorage.getItem('memberEmail'));
 
     console.log('filename:', filename);
 
@@ -63,10 +64,14 @@ const BoardWrite = () => {
     }
 
     const config = {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Authorization: localStorage.getItem('Authorization'),
+      },
     };
 
-    await dispatch(boardActions.getBoardWrite(formData, config));
+    console.log(localStorage.getItem('Authorization'));
+    await dispatch(boardActions.getboardWrite(formData, config));
 
     //state에 저장되어있는 것들 초기화
     setInputs({
@@ -84,6 +89,19 @@ const BoardWrite = () => {
       <form onSubmit={onSubmit}>
         <table>
           <tbody>
+            <tr>
+              <td>
+                글쓴이
+              </td>
+              <td>
+              <input 
+                type = 'type'
+                readOnly 
+                value = {localStorage.getItem('memberName')} 
+                name = 'memberName'
+              /> 
+              </td>
+            </tr>
             <tr>
               <td width='20%' align='center'>
                 제목

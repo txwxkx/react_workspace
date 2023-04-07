@@ -9,11 +9,18 @@ const BoardView = () => {
   const navigator = useNavigate();
 
   const boardDetail = useSelector((state) => state.board.boardDetail); //reducer 이용해서 store에 저장되어있는 것을 가져옴
-  // const boardFile = useSelector((state) => state.board.boardFile);
+  //const boardFile = useSelector((state) => state.board.boardFile);
   const pv = useSelector((state) => state.board.pv);
 
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: localStorage.getItem('Authorization'),
+    },
+  };
+
   useEffect(() => {
-    dispatch(boardActions.getBoardDetail(num));
+    dispatch(boardActions.getBoardDetail(num, config));
   }, [dispatch, num]);
 
   //download
@@ -22,7 +29,7 @@ const BoardView = () => {
       boardActions.getBoardDownload(boardDetail.upload)
     );
 
-    // dispatch (boardActions.getBoardDownload(boardDetail.upload));
+    //dispatch(boardActions.getBoardDownload(boardDetail.upload));
 
     const filename = boardDetail.upload.substring(
       boardDetail.upload.indexOf('_') + 1
@@ -45,8 +52,12 @@ const BoardView = () => {
 
   const handleDelete = (e) => {
     e.preventDefault();
-    dispatch(boardActions.getBoardDelete(num));
-    navigator(`/board/list.${pv.currentPage}`);
+    dispatch(boardActions.getBoardDelete(num, {
+      headers: {
+        Authorization: localStorage.getItem('Authorization'),
+      },
+    }));
+    navigator(`/board/list/${pv.currentPage}`);
   };
 
   return (
@@ -55,7 +66,7 @@ const BoardView = () => {
         <tbody>
           <tr>
             <th width='20%'>글쓴이</th>
-            <td>{boardDetail.reg_date}</td>
+            <td>{boardDetail['membersDTO'] ? boardDetail['membersDTO']['memberName'] : null}</td>
 
             <th width='20%'>조회수</th>
             <td>{boardDetail.readcount}</td>
@@ -73,7 +84,10 @@ const BoardView = () => {
 
           <tr>
             <th>내용</th>
-            <td colSpan='3' style = {{whiteSpace: 'pre-line'}}>{boardDetail.content}</td>
+            {/* whiteSpace: 'pre-line'  => 줄바꾸기*/}
+            <td colSpan='3' style={{ whiteSpace: 'pre-line' }}>
+              {boardDetail.content}
+            </td>
           </tr>
 
           <tr>
@@ -91,7 +105,6 @@ const BoardView = () => {
           </tr>
         </tbody>
       </table>
-
       <Link className='btn btn-primary' to={`/board/list/${pv.currentPage}`}>
         리스트
       </Link>
@@ -100,14 +113,20 @@ const BoardView = () => {
         답변
       </Link>
 
-      <Link className='btn btn-primary' to={`/board/update/${num}`}>
-        수정
-      </Link>
+      {localStorage.getItem('memberEmail') ===
+      (boardDetail['memberEmail']
+        ? boardDetail['memberEmail']
+        : null) ? (
+        <>
+          <Link className='btn btn-primary' to={`/board/update/${num}`}>
+            수정
+          </Link>
 
-      <button className='btn btn-primary' onClick={handleDelete}>
-        삭제
-      </button>
-
+          <button className='btn btn-primary' onClick={handleDelete}>
+            삭제
+          </button>
+        </>
+      ) : null}
     </div>
   );
 };
